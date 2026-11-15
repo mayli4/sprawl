@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
             "xyz.salemwitchfinder.sprawl.SprawlMod"
+        ],
+        "client": [
+            "xyz.salemwitchfinder.sprawl.SprawlClient"
         ]
     },
     "mixins": [

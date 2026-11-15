@@ -4,9 +4,13 @@
   "package": "xyz.salemwitchfinder.sprawl.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
-  "mixins": [],
+  "mixins": [
+    "MixinPlayerSit"
+  ],
   "client": [
-    "MixinMinecraft"
+    "MixinHumanoidModelSit",
+    "MixinMinecraftSitTick",
+    "MixinLivingEntityRendererSit"
   ],
   "server": [],
   "injectors": {

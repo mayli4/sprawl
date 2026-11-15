@@ -23,6 +23,5 @@ public final class SitKeys {
             CATEGORY
     );
 
-    private SitKeys() {
-    }
+    private SitKeys() { }
 }
