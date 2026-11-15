@@ -3,6 +3,7 @@ package xyz.salemwitchfinder.sprawl.mixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Pose;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,6 +15,9 @@ import xyz.salemwitchfinder.sprawl.sit.SitState;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraftSitTick {
+    @Unique
+    private static boolean sitKeyWasDown = false;
+
     @Inject(
             method = "tick",
             at = @At("TAIL")
@@ -26,22 +30,24 @@ public abstract class MixinMinecraftSitTick {
             return;
         }
 
+        boolean keyDown = SitKeys.SIT_KEY.isDown();
+        boolean pressed = keyDown && !sitKeyWasDown;
+        sitKeyWasDown = keyDown;
+
         if (mc.screen != null) {
             return;
         }
 
-        while (SitKeys.SIT_KEY.consumeClick()) {
+        if (pressed) {
             boolean currently = SitState.isSitting(mc.player.getUUID()) || mc.player.hasPose(Pose.SITTING);
             boolean iWannaSit = !currently;
 
-            if (iWannaSit && !SitHandler.canSit(mc.player)) {
-                continue;
+            if (!iWannaSit || SitHandler.canSit(mc.player)) {
+                SitState.setSitting(mc.player.getUUID(), iWannaSit);
+                mc.player.setPose(iWannaSit ? Pose.SITTING : Pose.STANDING);
+                mc.player.refreshDimensions();
+                SitNetwork.sendSitToServer(iWannaSit);
             }
-
-            SitState.setSitting(mc.player.getUUID(), iWannaSit);
-            mc.player.setPose(iWannaSit ? Pose.SITTING : Pose.STANDING);
-            mc.player.refreshDimensions();
-            SitNetwork.sendSitToServer(iWannaSit);
         }
 
         if (SitState.isSitting(mc.player.getUUID()) || mc.player.hasPose(Pose.SITTING)) {
