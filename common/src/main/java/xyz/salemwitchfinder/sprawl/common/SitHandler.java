@@ -1,4 +1,4 @@
-package xyz.salemwitchfinder.sprawl.sit;
+package xyz.salemwitchfinder.sprawl.common;
 
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
@@ -8,7 +8,7 @@ import xyz.salemwitchfinder.sprawl.PlayerCtx;
 public final class SitHandler {
     public static final EntityDimensions SITTING_DIMENSIONS = EntityDimensions.scalable(0.6F, 1.2F).withEyeHeight(1.05F);
 
-    public static final float SIT_MODEL_SHIFT_Y = 0.55F;
+    public static final float SIT_MODEL_SHIFT_Y = 0.65F;
 
     private SitHandler() { }
 
