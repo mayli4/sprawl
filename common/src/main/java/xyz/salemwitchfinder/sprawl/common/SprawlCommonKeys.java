@@ -1,10 +1,10 @@
-package xyz.salemwitchfinder.sprawl.sit;
+package xyz.salemwitchfinder.sprawl.common;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
-public final class SitKeys {
+public final class SprawlCommonKeys {
     public static final String CATEGORY = "key.categories.sprawlmod";
     public static final String KEY_SIT = "key.sprawlmod.sit";
     public static final String KEY_CRAWL = "key.sprawlmod.crawl";
@@ -23,5 +23,5 @@ public final class SitKeys {
             CATEGORY
     );
 
-    private SitKeys() { }
+    private SprawlCommonKeys() { }
 }

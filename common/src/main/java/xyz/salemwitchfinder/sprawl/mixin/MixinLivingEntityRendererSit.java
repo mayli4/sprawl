@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.salemwitchfinder.sprawl.sit.SitHandler;
+import xyz.salemwitchfinder.sprawl.common.SitHandler;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinLivingEntityRendererSit {

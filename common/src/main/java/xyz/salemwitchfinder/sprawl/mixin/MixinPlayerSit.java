@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.salemwitchfinder.sprawl.sit.SitHandler;
-import xyz.salemwitchfinder.sprawl.sit.SitState;
+import xyz.salemwitchfinder.sprawl.common.SitHandler;
+import xyz.salemwitchfinder.sprawl.common.SitState;
 
 @Mixin(Player.class)
 public abstract class MixinPlayerSit {

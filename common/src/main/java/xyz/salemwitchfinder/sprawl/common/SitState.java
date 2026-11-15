@@ -1,4 +1,4 @@
-package xyz.salemwitchfinder.sprawl.sit;
+package xyz.salemwitchfinder.sprawl.common;
 
 import java.util.Set;
 import java.util.UUID;

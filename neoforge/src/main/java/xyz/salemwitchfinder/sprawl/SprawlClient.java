@@ -2,7 +2,7 @@ package xyz.salemwitchfinder.sprawl;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import xyz.salemwitchfinder.sprawl.sit.SitKeys;
+import xyz.salemwitchfinder.sprawl.common.SprawlCommonKeys;
 
 public final class SprawlClient {
     private SprawlClient() {
@@ -13,6 +13,7 @@ public final class SprawlClient {
     }
 
     private static void registerKeys(RegisterKeyMappingsEvent event) {
-        event.register(SitKeys.SIT_KEY);
+        event.register(SprawlCommonKeys.SIT_KEY);
+        event.register(SprawlCommonKeys.CRAWL_KEY);
     }
 }

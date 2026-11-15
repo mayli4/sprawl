@@ -8,9 +8,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import xyz.salemwitchfinder.sprawl.sit.SitHandler;
+import xyz.salemwitchfinder.sprawl.common.CrawlHandler;
+import xyz.salemwitchfinder.sprawl.common.CrawlState;
+import xyz.salemwitchfinder.sprawl.common.SitHandler;
+import xyz.salemwitchfinder.sprawl.networking.CrawlPayload;
 import xyz.salemwitchfinder.sprawl.networking.SitPayload;
-import xyz.salemwitchfinder.sprawl.sit.SitState;
+import xyz.salemwitchfinder.sprawl.common.SitState;
 
 @Mod(Constants.MOD_ID)
 public class SprawlMod {
@@ -27,15 +30,23 @@ public class SprawlMod {
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedOutEvent e) -> {
             if (e.getEntity() != null) {
                 SitState.clear(e.getEntity().getUUID());
+                CrawlState.clear(e.getEntity().getUUID());
             }
         });
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToServer(
+        var registrar = event.registrar("1");
+        registrar.playToServer(
                 SitPayload.TYPE,
                 SitPayload.CODEC,
                 (payload, ctx) -> SitHandler.setSitting(
                         ctx.player(), payload.sitting()));
+
+        registrar.playToServer(
+                CrawlPayload.TYPE,
+                CrawlPayload.CODEC,
+                (payload, ctx) -> CrawlHandler.setCrawling(
+                        ctx.player(), payload.crawling()));
     }
 }

@@ -7,16 +7,20 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.salemwitchfinder.sprawl.networking.SitNetwork;
-import xyz.salemwitchfinder.sprawl.sit.SitHandler;
-import xyz.salemwitchfinder.sprawl.sit.SitKeys;
-import xyz.salemwitchfinder.sprawl.sit.SitState;
+import xyz.salemwitchfinder.sprawl.networking.SprawlNetwork;
+import xyz.salemwitchfinder.sprawl.common.CrawlHandler;
+import xyz.salemwitchfinder.sprawl.common.CrawlState;
+import xyz.salemwitchfinder.sprawl.common.SitHandler;
+import xyz.salemwitchfinder.sprawl.common.SprawlCommonKeys;
+import xyz.salemwitchfinder.sprawl.common.SitState;
 
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraftSitTick {
     @Unique
     private static boolean sitKeyWasDown = false;
+    @Unique
+    private static boolean crawlKeyWasDown = false;
 
     @Inject(
             method = "tick",
@@ -30,9 +34,13 @@ public abstract class MixinMinecraftSitTick {
             return;
         }
 
-        boolean keyDown = SitKeys.SIT_KEY.isDown();
+        boolean keyDown = SprawlCommonKeys.SIT_KEY.isDown();
         boolean pressed = keyDown && !sitKeyWasDown;
         sitKeyWasDown = keyDown;
+
+        boolean crawlDown = SprawlCommonKeys.CRAWL_KEY.isDown();
+        boolean crawlPressed = crawlDown && !crawlKeyWasDown;
+        crawlKeyWasDown = crawlDown;
 
         if (mc.screen != null) {
             return;
@@ -46,7 +54,7 @@ public abstract class MixinMinecraftSitTick {
                 SitState.setSitting(mc.player.getUUID(), iWannaSit);
                 mc.player.setPose(iWannaSit ? Pose.SITTING : Pose.STANDING);
                 mc.player.refreshDimensions();
-                SitNetwork.sendSitToServer(iWannaSit);
+                SprawlNetwork.sendSitToServer(iWannaSit);
             }
         }
 
@@ -67,8 +75,35 @@ public abstract class MixinMinecraftSitTick {
                     mc.player.refreshDimensions();
                 }
                 if (wasSitting) {
-                    SitNetwork.sendSitToServer(false);
+                    SprawlNetwork.sendSitToServer(false);
                 }
+            }
+        }
+
+        if (crawlPressed) {
+            boolean crawling = CrawlState.isCrawling(mc.player.getUUID()) || (mc.player.hasPose(Pose.SWIMMING) && !mc.player.isInWater());
+            boolean iWannaCrawl = !crawling;
+
+            if (SitState.isSitting(mc.player.getUUID()) || mc.player.hasPose(Pose.SITTING)) {
+                boolean wasSitting = SitState.isSitting(mc.player.getUUID());
+                SitState.setSitting(mc.player.getUUID(), false);
+                if (mc.player.hasPose(Pose.SITTING)) {
+                    mc.player.setPose(Pose.STANDING);
+                    mc.player.refreshDimensions();
+                }
+                if (wasSitting) {
+                    SprawlNetwork.sendSitToServer(false);
+                }
+            }
+            if (!iWannaCrawl || CrawlHandler.canCrawl(mc.player)) {
+                CrawlState.setCrawling(mc.player.getUUID(), iWannaCrawl);
+                if (iWannaCrawl) {
+                    mc.player.setPose(Pose.SWIMMING);
+                } else if (mc.player.hasPose(Pose.SWIMMING) && !mc.player.isInWater()) {
+                    mc.player.setPose(Pose.STANDING);
+                }
+                mc.player.refreshDimensions();
+                SprawlNetwork.sendCrawlToServer(iWannaCrawl);
             }
         }
     }
