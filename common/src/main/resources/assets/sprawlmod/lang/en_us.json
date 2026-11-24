@@ -1,5 +1,11 @@
 {
   "key.categories.sprawlmod": "Sprawl",
   "key.sprawlmod.sit": "Sit / Stand",
-  "key.sprawlmod.crawl": "Crawl"
+  "key.sprawlmod.crawl": "Crawl",
+  "title.sprawlmod.config": "Sprawl Config",
+  "category.sprawlmod.general": "Controls",
+  "option.sprawlmod.sitToggle": "Sit toggle mode",
+  "tooltip.sprawlmod.sitToggle": "On: press the sit key to sit. OFF: hold the sit key to sit.",
+  "option.sprawlmod.crawlToggle": "Crawl toggle mode",
+  "tooltip.sprawlmod.crawlToggle": "ON: press the crawl key to crawl. OFF: hold the crawl key to crawl."
 }

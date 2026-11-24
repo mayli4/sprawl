@@ -25,6 +25,7 @@ public class SprawlMod {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             SprawlClient.register(eventBus);
+            SprawlNeoForgeClient.init();
         }
 
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedOutEvent e) -> {

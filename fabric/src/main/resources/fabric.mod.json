@@ -20,6 +20,9 @@
         ],
         "client": [
             "xyz.salemwitchfinder.sprawl.SprawlClient"
+        ],
+        "modmenu": [
+            "xyz.salemwitchfinder.sprawl.ModMenuIntegration"
         ]
     },
     "mixins": [
@@ -30,7 +33,8 @@
         "fabricloader": ">=${fabric_loader_version}",
         "fabric-api": "*",
         "minecraft": "${minecraft_version}",
-        "java": ">=${java_version}"
+        "java": ">=${java_version}",
+        "cloth-config": "*"
     },
     "suggests": {
         "another-mod": "*"
